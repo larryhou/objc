@@ -59,6 +59,6 @@
 @property (nonatomic, readwrite, copy) NSString *subtitle;
 
 
-- (id)initWithCLRegion:(CLRegion *)newRegion;
+- (id)initWithCLRegion:(CLCircularRegion *)newRegion;
 
 @end

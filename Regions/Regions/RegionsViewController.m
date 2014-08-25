@@ -96,8 +96,11 @@
 	for (int i = 0; i < [regions count]; i++)
 	{
 		CLRegion *region = [regions objectAtIndex:i];
-		RegionAnnotation *annotation = [[RegionAnnotation alloc] initWithCLRegion:region];
-		[regionsMapView addAnnotation:annotation];
+		if ([region isKindOfClass:[CLCircularRegion class]])
+		{
+			RegionAnnotation *annotation = [[RegionAnnotation alloc] initWithCLRegion: (CLCircularRegion *)region];
+			[regionsMapView addAnnotation:annotation];
+		}
 	}
 }
 
@@ -199,31 +202,15 @@
 {
 	if ([overlay isKindOfClass:[MKCircle class]])
 	{
-		MKOverlayPathRenderer *render = [[MKOverlayPathRenderer alloc] initWithOverlay:overlay];
-		render.strokeColor = [UIColor blueColor];
+		MKCircleRenderer *render = [[MKCircleRenderer alloc] initWithOverlay:overlay];
+		render.strokeColor = [[UIColor alloc] initWithRed:1.0 green:0.0 blue:1.0 alpha:.5];
+		render.fillColor = [[UIColor alloc] initWithRed:1.0 green:0.0 blue:1.0 alpha:.1];
 		render.lineWidth = 1;
-		render.fillColor = [[UIColor blueColor] colorWithAlphaComponent:0.1];
 		return render;
 	}
 	
 	return nil;
 }
-
-//- (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id <MKOverlay>)overlay
-//{
-//	if([overlay isKindOfClass:[MKCircle class]])
-//	{
-//		// Create the view for the radius overlay.
-//		MKCircleView *circleView = [[MKCircleView alloc] initWithOverlay:overlay];
-//		circleView.strokeColor = [UIColor blueColor];
-//		circleView.fillColor = [[UIColor blueColor] colorWithAlphaComponent:0.1];
-//		
-//		return circleView;		
-//	}
-//	
-//	return nil;
-//}
-
 
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)annotationView didChangeDragState:(MKAnnotationViewDragState)newState fromOldState:(MKAnnotationViewDragState)oldState
 {
@@ -247,7 +234,7 @@
 			
 			CLCircularRegion *newRegion = [[CLCircularRegion alloc]
 							initWithCenter:regionAnnotation.coordinate
-								    radius:1000.0
+								    radius:500.0
 								identifier:[NSString stringWithFormat:@"%f, %f", regionAnnotation.coordinate.latitude, regionAnnotation.coordinate.longitude]];
 			regionAnnotation.region = newRegion;
 			
@@ -352,7 +339,7 @@
 		CLLocationCoordinate2D coord = CLLocationCoordinate2DMake(regionsMapView.centerCoordinate.latitude, regionsMapView.centerCoordinate.longitude);
 		CLCircularRegion *newRegion = [[CLCircularRegion alloc]
 							  initWithCenter:coord
-									  radius:1000.0
+									  radius:500.0
 								  identifier:[NSString stringWithFormat:@"%f, %f", regionsMapView.centerCoordinate.latitude, regionsMapView.centerCoordinate.longitude]];
 		
 		// Create an annotation to show where the region is located on the map.
