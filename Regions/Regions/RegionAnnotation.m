@@ -63,7 +63,7 @@
 }
 
 
-- (id)initWithCLRegion:(CLRegion *)newRegion
+- (id)initWithCLRegion:(CLCircularRegion *)newRegion
 {
 	self = [self init];
 	

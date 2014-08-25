@@ -80,6 +80,7 @@
 	locationManager.delegate = self;
 	locationManager.distanceFilter = kCLLocationAccuracyHundredMeters;
 	locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+	[locationManager requestWhenInUseAuthorization];
 	
 	// Start updating location changes.
 	[locationManager startUpdatingLocation];
@@ -231,10 +232,14 @@
 		{
 			[regionView updateRadiusOverlay];
 			
-			CLRegion *newRegion = [[CLRegion alloc] initCircularRegionWithCenter:regionAnnotation.coordinate radius:1000.0 identifier:[NSString stringWithFormat:@"%f, %f", regionAnnotation.coordinate.latitude, regionAnnotation.coordinate.longitude]];
+			CLCircularRegion *newRegion = [[CLCircularRegion alloc]
+							initWithCenter:regionAnnotation.coordinate
+								    radius:1000.0
+								identifier:[NSString stringWithFormat:@"%f, %f", regionAnnotation.coordinate.latitude, regionAnnotation.coordinate.longitude]];
 			regionAnnotation.region = newRegion;
 			
-			[locationManager startMonitoringForRegion:regionAnnotation.region desiredAccuracy:kCLLocationAccuracyBest];
+			locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+			[locationManager startMonitoringForRegion:regionAnnotation.region];
 		}		
 	}	
 }
@@ -262,10 +267,11 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
 {
-	NSLog(@"didUpdateToLocation %@ from %@", newLocation, oldLocation);
+//	NSLog(@"didUpdateToLocation %@ from %@", newLocation, oldLocation);
 	
 	// Work around a bug in MapKit where user location is not initially zoomed to.
-	if (oldLocation == nil) {
+	if (oldLocation == nil)
+	{
 		// Zoom to the current user location.
 		MKCoordinateRegion userLocation = MKCoordinateRegionMakeWithDistance(newLocation.coordinate, 1500.0, 1500.0);
 		[regionsMapView setRegion:userLocation animated:YES];
@@ -327,13 +333,14 @@
  */
 - (IBAction)addRegion
 {
-	if ([CLLocationManager regionMonitoringAvailable])
+	if ([CLLocationManager isMonitoringAvailableForClass:[CLCircularRegion class]])
 	{
 		// Create a new region based on the center of the map view.
 		CLLocationCoordinate2D coord = CLLocationCoordinate2DMake(regionsMapView.centerCoordinate.latitude, regionsMapView.centerCoordinate.longitude);
-		CLRegion *newRegion = [[CLRegion alloc] initCircularRegionWithCenter:coord 
-																	  radius:1000.0 
-																  identifier:[NSString stringWithFormat:@"%f, %f", regionsMapView.centerCoordinate.latitude, regionsMapView.centerCoordinate.longitude]];
+		CLCircularRegion *newRegion = [[CLCircularRegion alloc]
+							  initWithCenter:coord
+									  radius:1000.0
+								  identifier:[NSString stringWithFormat:@"%f, %f", regionsMapView.centerCoordinate.latitude, regionsMapView.centerCoordinate.longitude]];
 		
 		// Create an annotation to show where the region is located on the map.
 		RegionAnnotation *myRegionAnnotation = [[RegionAnnotation alloc] initWithCLRegion:newRegion];
@@ -344,7 +351,8 @@
 		
 		
 		// Start monitoring the newly created region.
-		[locationManager startMonitoringForRegion:newRegion desiredAccuracy:kCLLocationAccuracyBest];
+		locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+		[locationManager startMonitoringForRegion:newRegion];
 		
 	}
 	else
@@ -357,14 +365,16 @@
 /*
  This method adds the region event to the events array and updates the icon badge number.
  */
-- (void)updateWithEvent:(NSString *)event {
+- (void)updateWithEvent:(NSString *)event
+{
 	// Add region event to the updates array.
 	[updateEvents insertObject:event atIndex:0];
 	
 	// Update the icon badge number.
 	[UIApplication sharedApplication].applicationIconBadgeNumber++;
 	
-	if (!updatesTableView.hidden) {
+	if (!updatesTableView.hidden)
+	{
 		[updatesTableView reloadData];
 	}
 }

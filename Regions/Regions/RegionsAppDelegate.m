@@ -105,6 +105,8 @@
 	{
 		// Stop significant location updates and start normal location updates again since the app is in the forefront.
 		[viewController.locationManager stopMonitoringSignificantLocationChanges];
+		
+		[viewController.locationManager requestWhenInUseAuthorization];
 		[viewController.locationManager startUpdatingLocation];
 	}
 	else
