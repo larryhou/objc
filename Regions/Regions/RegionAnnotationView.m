@@ -52,10 +52,12 @@
 
 @synthesize map, theAnnotation;
 
-- (id)initWithAnnotation:(id <MKAnnotation>)annotation {
+- (id)initWithAnnotation:(id <MKAnnotation>)annotation
+{
 	self = [super initWithAnnotation:annotation reuseIdentifier:[annotation title]];	
 	
-	if (self) {		
+	if (self)
+	{
 		self.canShowCallout	= YES;		
 		self.multipleTouchEnabled = NO;
 		self.draggable = YES;
@@ -72,14 +74,18 @@
 }
 
 
-- (void)removeRadiusOverlay {
+- (void)removeRadiusOverlay
+{
 	// Find the overlay for this annotation view and remove it if it has the same coordinates.
-	for (id overlay in [map overlays]) {
-		if ([overlay isKindOfClass:[MKCircle class]]) {						
+	for (id overlay in [map overlays])
+	{
+		if ([overlay isKindOfClass:[MKCircle class]])
+		{
 			MKCircle *circleOverlay = (MKCircle *)overlay;			
 			CLLocationCoordinate2D coord = circleOverlay.coordinate;
 			
-			if (coord.latitude == theAnnotation.coordinate.latitude && coord.longitude == theAnnotation.coordinate.longitude) {
+			if (coord.latitude == theAnnotation.coordinate.latitude && coord.longitude == theAnnotation.coordinate.longitude)
+			{
 				[map removeOverlay:overlay];
 			}			
 		}
@@ -89,8 +95,10 @@
 }
 
 
-- (void)updateRadiusOverlay {
-	if (!isRadiusUpdated) {
+- (void)updateRadiusOverlay
+{
+	if (!isRadiusUpdated)
+	{
 		isRadiusUpdated = YES;
 		
 		[self removeRadiusOverlay];	

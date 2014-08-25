@@ -49,7 +49,8 @@
 
 @class RegionAnnotation;
 
-@interface RegionAnnotationView : MKPinAnnotationView {	
+@interface RegionAnnotationView : MKPinAnnotationView
+{
 @private
 	MKCircle *radiusOverlay;
 	BOOL isRadiusUpdated;

@@ -47,7 +47,8 @@
 
 #import <MapKit/MapKit.h>
 
-@interface RegionAnnotation : NSObject <MKAnnotation> {
+@interface RegionAnnotation : NSObject <MKAnnotation>
+{
 
 }
 

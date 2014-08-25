@@ -47,7 +47,8 @@
 
 @class RegionsViewController;
 
-@interface RegionsAppDelegate : NSObject <UIApplicationDelegate> {
+@interface RegionsAppDelegate : NSObject <UIApplicationDelegate>
+{
 
 }
 
