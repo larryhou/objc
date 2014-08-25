@@ -195,21 +195,34 @@
 	return nil;	
 }
 
-
-- (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id <MKOverlay>)overlay
+- (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay
 {
-	if([overlay isKindOfClass:[MKCircle class]])
+	if ([overlay isKindOfClass:[MKCircle class]])
 	{
-		// Create the view for the radius overlay.
-		MKCircleView *circleView = [[MKCircleView alloc] initWithOverlay:overlay];
-		circleView.strokeColor = [UIColor purpleColor];
-		circleView.fillColor = [[UIColor purpleColor] colorWithAlphaComponent:0.4];
-		
-		return circleView;		
+		MKOverlayPathRenderer *render = [[MKOverlayPathRenderer alloc] initWithOverlay:overlay];
+		render.strokeColor = [UIColor blueColor];
+		render.lineWidth = 1;
+		render.fillColor = [[UIColor blueColor] colorWithAlphaComponent:0.1];
+		return render;
 	}
 	
 	return nil;
 }
+
+//- (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id <MKOverlay>)overlay
+//{
+//	if([overlay isKindOfClass:[MKCircle class]])
+//	{
+//		// Create the view for the radius overlay.
+//		MKCircleView *circleView = [[MKCircleView alloc] initWithOverlay:overlay];
+//		circleView.strokeColor = [UIColor blueColor];
+//		circleView.fillColor = [[UIColor blueColor] colorWithAlphaComponent:0.1];
+//		
+//		return circleView;		
+//	}
+//	
+//	return nil;
+//}
 
 
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)annotationView didChangeDragState:(MKAnnotationViewDragState)newState fromOldState:(MKAnnotationViewDragState)oldState
