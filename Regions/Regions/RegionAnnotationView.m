@@ -104,10 +104,6 @@
 }
 
 
-- (void)dealloc {
-	[radiusOverlay release];
-	[super dealloc];
-}
 
 
 @end

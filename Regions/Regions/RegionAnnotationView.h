@@ -55,8 +55,8 @@
 	BOOL isRadiusUpdated;
 }
 
-@property (nonatomic, assign) MKMapView *map;
-@property (nonatomic, assign) RegionAnnotation *theAnnotation;
+@property (nonatomic, unsafe_unretained) MKMapView *map;
+@property (nonatomic, unsafe_unretained) RegionAnnotation *theAnnotation;
 
 - (id)initWithAnnotation:(id <MKAnnotation>)annotation;
 - (void)updateRadiusOverlay;

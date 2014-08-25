@@ -52,11 +52,11 @@
 
 }
 
-@property (nonatomic, retain) IBOutlet MKMapView *regionsMapView;
-@property (nonatomic, retain) IBOutlet UITableView *updatesTableView;
-@property (nonatomic, retain) NSMutableArray *updateEvents;
-@property (nonatomic, retain) CLLocationManager *locationManager;
-@property (nonatomic, retain) IBOutlet UINavigationBar *navigationBar;
+@property (nonatomic, strong) IBOutlet MKMapView *regionsMapView;
+@property (nonatomic, strong) IBOutlet UITableView *updatesTableView;
+@property (nonatomic, strong) NSMutableArray *updateEvents;
+@property (nonatomic, strong) CLLocationManager *locationManager;
+@property (nonatomic, strong) IBOutlet UINavigationBar *navigationBar;
 
 - (IBAction)switchViews;
 - (IBAction)addRegion;

@@ -61,13 +61,7 @@
 
 
 - (void)dealloc {
-	[updateEvents release];
 	self.locationManager.delegate = nil;
-	[locationManager release];
-	[regionsMapView release];
-	[updatesTableView release];
-	[navigationBar release];
-    [super dealloc];
 }
 
 #pragma mark - View lifecycle
@@ -98,7 +92,6 @@
 		CLRegion *region = [regions objectAtIndex:i];
 		RegionAnnotation *annotation = [[RegionAnnotation alloc] initWithCLRegion:region];
 		[regionsMapView addAnnotation:annotation];
-		[annotation release];
 	}
 }
 
@@ -136,7 +129,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 	
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
     
 	cell.textLabel.font = [UIFont systemFontOfSize:12.0];
@@ -161,7 +154,7 @@
 		RegionAnnotationView *regionView = (RegionAnnotationView *)[regionsMapView dequeueReusableAnnotationViewWithIdentifier:annotationIdentifier];	
 		
 		if (!regionView) {
-			regionView = [[[RegionAnnotationView alloc] initWithAnnotation:annotation] autorelease];
+			regionView = [[RegionAnnotationView alloc] initWithAnnotation:annotation];
 			regionView.map = regionsMapView;
 			
 			// Create a button for the left callout accessory view of each annotation to remove the annotation and region being monitored.
@@ -188,7 +181,7 @@
 - (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id <MKOverlay>)overlay {
 	if([overlay isKindOfClass:[MKCircle class]]) {
 		// Create the view for the radius overlay.
-		MKCircleView *circleView = [[[MKCircleView alloc] initWithOverlay:overlay] autorelease];
+		MKCircleView *circleView = [[MKCircleView alloc] initWithOverlay:overlay];
 		circleView.strokeColor = [UIColor purpleColor];
 		circleView.fillColor = [[UIColor purpleColor] colorWithAlphaComponent:0.4];
 		
@@ -217,7 +210,6 @@
 			
 			CLRegion *newRegion = [[CLRegion alloc] initCircularRegionWithCenter:regionAnnotation.coordinate radius:1000.0 identifier:[NSString stringWithFormat:@"%f, %f", regionAnnotation.coordinate.latitude, regionAnnotation.coordinate.longitude]];
 			regionAnnotation.region = newRegion;
-			[newRegion release];
 			
 			[locationManager startMonitoringForRegion:regionAnnotation.region desiredAccuracy:kCLLocationAccuracyBest];
 		}		
@@ -317,12 +309,10 @@
 		
 		[regionsMapView addAnnotation:myRegionAnnotation];
 		
-		[myRegionAnnotation release];
 		
 		// Start monitoring the newly created region.
 		[locationManager startMonitoringForRegion:newRegion desiredAccuracy:kCLLocationAccuracyBest];
 		
-		[newRegion release];
 	}
 	else {
 		NSLog(@"Region monitoring is not available.");

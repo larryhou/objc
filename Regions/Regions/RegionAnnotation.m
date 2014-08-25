@@ -92,12 +92,6 @@
 }
 
 
-- (void)dealloc {
-	[region release];
-	[title release];
-	[subtitle release];
-	[super dealloc];
-}
 
 
 @end
