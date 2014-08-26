@@ -175,7 +175,6 @@
 		if (!regionView)
 		{
 			regionView = [[RegionAnnotationView alloc] initWithAnnotation:annotation];
-			regionView.reuseIdentifier = annotationIdentifier;
 			regionView.map = regionsMapView;
 			
 			// Create a button for the left callout accessory view of each annotation to remove the annotation and region being monitored.
