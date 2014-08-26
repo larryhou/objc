@@ -50,7 +50,7 @@
 
 @implementation RegionAnnotationView
 
-@synthesize map, theAnnotation;
+@synthesize map, regionAnnotation;
 
 - (id)initWithAnnotation:(id <MKAnnotation>)annotation
 {
@@ -58,60 +58,58 @@
 	
 	if (self)
 	{
+		self.pinColor = MKPinAnnotationColorRed;
 		self.canShowCallout	= YES;		
 		self.multipleTouchEnabled = NO;
 		self.draggable = YES;
 		self.animatesDrop = YES;
 		self.map = nil;
-		theAnnotation = (RegionAnnotation *)annotation;
-		self.pinColor = MKPinAnnotationColorRed;
-		radiusOverlay = [MKCircle circleWithCenterCoordinate:theAnnotation.coordinate radius:theAnnotation.radius];
 		
-		[map addOverlay:radiusOverlay];
+		regionAnnotation = (RegionAnnotation *)annotation;
+		overlay = [MKCircle circleWithCenterCoordinate:regionAnnotation.coordinate radius:regionAnnotation.radius];
+		
+		[map addOverlay:overlay];
 	}
 	
 	return self;	
 }
 
 
-- (void)removeRadiusOverlay
+- (void)removeFromMap
 {
 	// Find the overlay for this annotation view and remove it if it has the same coordinates.
-	for (id overlay in [map overlays])
+	for (id item in [map overlays])
 	{
-		if ([overlay isKindOfClass:[MKCircle class]])
+		if ([item isKindOfClass:[MKCircle class]])
 		{
-			MKCircle *circleOverlay = (MKCircle *)overlay;			
+			MKCircle *circleOverlay = (MKCircle *)item;			
 			CLLocationCoordinate2D coord = circleOverlay.coordinate;
 			
-			if (coord.latitude == theAnnotation.coordinate.latitude && coord.longitude == theAnnotation.coordinate.longitude)
+			if (coord.latitude == regionAnnotation.coordinate.latitude && coord.longitude == regionAnnotation.coordinate.longitude)
 			{
-				[map removeOverlay:overlay];
-			}			
+				[map removeOverlay:item];
+			}
 		}
 	}
 	
-	isRadiusUpdated = NO;
+	isUpdated = NO;
 }
 
 
-- (void)updateRadiusOverlay
+- (void)updateRelatedOverlay
 {
-	if (!isRadiusUpdated)
+	if (!isUpdated)
 	{
-		isRadiusUpdated = YES;
+		isUpdated = YES;
 		
-		[self removeRadiusOverlay];	
+		[self removeFromMap];
 		
 		self.canShowCallout = NO;
 		
-		[map addOverlay:[MKCircle circleWithCenterCoordinate:theAnnotation.coordinate radius:theAnnotation.radius]];	
+		[map addOverlay:[MKCircle circleWithCenterCoordinate:regionAnnotation.coordinate radius:regionAnnotation.radius]];	
 		
-		self.canShowCallout = YES;		
+		self.canShowCallout = YES;
 	}
 }
-
-
-
 
 @end

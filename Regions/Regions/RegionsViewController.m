@@ -168,12 +168,14 @@
 	if([annotation isKindOfClass:[RegionAnnotation class]])
 	{
 		RegionAnnotation *currentAnnotation = (RegionAnnotation *)annotation;
+		
 		NSString *annotationIdentifier = [currentAnnotation title];
 		RegionAnnotationView *regionView = (RegionAnnotationView *)[regionsMapView dequeueReusableAnnotationViewWithIdentifier:annotationIdentifier];	
 		
 		if (!regionView)
 		{
 			regionView = [[RegionAnnotationView alloc] initWithAnnotation:annotation];
+			regionView.reuseIdentifier = annotationIdentifier;
 			regionView.map = regionsMapView;
 			
 			// Create a button for the left callout accessory view of each annotation to remove the annotation and region being monitored.
@@ -186,14 +188,14 @@
 		else
 		{
 			regionView.annotation = annotation;
-			regionView.theAnnotation = annotation;
+			regionView.regionAnnotation = annotation;
 		}
 		
 		// Update or add the overlay displaying the radius of the region around the annotation.
-		[regionView updateRadiusOverlay];
+		[regionView updateRelatedOverlay];
 		
-		return regionView;		
-	}	
+		return regionView;
+	}
 	
 	return nil;	
 }
@@ -222,7 +224,7 @@
 		// If the annotation view is starting to be dragged, remove the overlay and stop monitoring the region.
 		if (newState == MKAnnotationViewDragStateStarting)
 		{
-			[regionView removeRadiusOverlay];
+			[regionView removeFromMap];
 			
 			[locationManager stopMonitoringForRegion:regionAnnotation.region];
 		}
@@ -230,7 +232,7 @@
 		// Once the annotation view has been dragged and placed in a new location, update and add the overlay and begin monitoring the new region.
 		if (oldState == MKAnnotationViewDragStateDragging && newState == MKAnnotationViewDragStateEnding)
 		{
-			[regionView updateRadiusOverlay];
+			[regionView updateRelatedOverlay];
 			
 			CLCircularRegion *newRegion = [[CLCircularRegion alloc]
 							initWithCenter:regionAnnotation.coordinate
@@ -252,7 +254,7 @@
 	
 	// Stop monitoring the region, remove the radius overlay, and finally remove the annotation from the map.
 	[locationManager stopMonitoringForRegion:regionAnnotation.region];
-	[regionView removeRadiusOverlay];
+	[regionView removeFromMap];
 	[regionsMapView removeAnnotation:regionAnnotation];
 }
 

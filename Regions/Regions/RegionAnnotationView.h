@@ -52,15 +52,15 @@
 @interface RegionAnnotationView : MKPinAnnotationView
 {
 @private
-	MKCircle *radiusOverlay;
-	BOOL isRadiusUpdated;
+	MKCircle *overlay;
+	BOOL isUpdated;
 }
 
 @property (nonatomic, unsafe_unretained) MKMapView *map;
-@property (nonatomic, unsafe_unretained) RegionAnnotation *theAnnotation;
+@property (nonatomic, unsafe_unretained) RegionAnnotation *regionAnnotation;
 
 - (id)initWithAnnotation:(id <MKAnnotation>)annotation;
-- (void)updateRadiusOverlay;
-- (void)removeRadiusOverlay;
+- (void)updateRelatedOverlay;
+- (void)removeFromMap;
 
 @end
