@@ -58,7 +58,8 @@ Copyright (C) 2014 Apple Inc. All Rights Reserved.
 
 @implementation GraphView
 
-- (void)updateHistoryWithX:(CLHeadingComponentValue)x y:(CLHeadingComponentValue)y z:(CLHeadingComponentValue)z {
+- (void)updateHistoryWithX:(CLHeadingComponentValue)x y:(CLHeadingComponentValue)y z:(CLHeadingComponentValue)z
+{
 
 	// Add to history.
 	history[self.nextIndex][0] = x;
@@ -72,7 +73,8 @@ Copyright (C) 2014 Apple Inc. All Rights Reserved.
 	[self setNeedsDisplay];
 }
 
-- (void)drawGraphInContext:(CGContextRef)context withBounds:(CGRect)bounds {
+- (void)drawGraphInContext:(CGContextRef)context withBounds:(CGRect)bounds
+{
     CGFloat value, temp;
 
     // Save any previous graphics state settings before setting the color and line width for the current draw.
@@ -82,15 +84,19 @@ Copyright (C) 2014 Apple Inc. All Rights Reserved.
 	// Draw the intermediate lines
 	CGContextSetGrayStrokeColor(context, 0.6, 1.0);
 	CGContextBeginPath(context);
-	for (value = -5 + 1.0; value <= 5 - 1.0; value += 1.0) {
+	for (value = -5 + 1.0; value <= 5 - 1.0; value += 1.0)
+	{
 	
-		if (value == 0.0) {
+		if (value == 0.0)
+		{
 			continue;
 		}
+		
 		temp = 0.5 + roundf(bounds.origin.y + bounds.size.height / 2 + value / (2 * 5) * bounds.size.height);
 		CGContextMoveToPoint(context, bounds.origin.x, temp);
 		CGContextAddLineToPoint(context, bounds.origin.x + bounds.size.width, temp);
 	}
+	
 	CGContextStrokePath(context);
 	
 	// Draw the center line
@@ -105,16 +111,21 @@ Copyright (C) 2014 Apple Inc. All Rights Reserved.
     CGContextRestoreGState(context);
 }
 
-- (void)drawHistory:(NSUInteger)axis fromIndex:(NSUInteger)index inContext:(CGContextRef)context bounds:(CGRect)bounds {
+- (void)drawHistory:(NSUInteger)axis fromIndex:(NSUInteger)index inContext:(CGContextRef)context bounds:(CGRect)bounds
+{
     CGFloat value;
 	    
 	CGContextBeginPath(context);
-    for (NSUInteger counter = 0; counter < 150; ++counter) {
+    for (NSUInteger counter = 0; counter < 150; ++counter)
+	{
         // UIView referential has the Y axis going down, so we need to draw upside-down.
         value = history[(index + counter) % 150][axis] / -128; 
-        if (counter > 0) {
+        if (counter > 0)
+		{
             CGContextAddLineToPoint(context, bounds.origin.x + (float)counter / (float)(150 - 1) * bounds.size.width, bounds.origin.y + bounds.size.height / 2 + value * bounds.size.height / 2);
-        } else {
+        }
+		else
+		{
             CGContextMoveToPoint(context, bounds.origin.x + (float)counter / (float)(150 - 1) * bounds.size.width, bounds.origin.y + bounds.size.height / 2 + value * bounds.size.height / 2);
         }
     }
@@ -127,7 +138,8 @@ Copyright (C) 2014 Apple Inc. All Rights Reserved.
     CGContextRestoreGState(context);
 }
 
-- (void)drawRect:(CGRect)clip {
+- (void)drawRect:(CGRect)clip
+{
     NSUInteger index = self.nextIndex;
     
 	CGContextRef context = UIGraphicsGetCurrentContext();
@@ -138,9 +150,11 @@ Copyright (C) 2014 Apple Inc. All Rights Reserved.
 	
     // plot x,y,z with anti-aliasing turned off
     CGContextSetAllowsAntialiasing(context, false);
-    for (NSUInteger i = 0; i < 3; ++i) {
+    for (NSUInteger i = 0; i < 3; ++i)
+	{
 		[self drawHistory:i fromIndex:index inContext:context bounds:bounds];
     }
+	
     CGContextSetAllowsAntialiasing(context, true);
 }
 

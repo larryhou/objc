@@ -47,7 +47,8 @@ Copyright (C) 2014 Apple Inc. All Rights Reserved.
 
 #import "TeslameterViewController.h"
 
-@interface GraphView : UIView {
+@interface GraphView : UIView
+{
 
 	CLHeadingComponentValue history[150][3];
 }
