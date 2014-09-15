@@ -97,6 +97,7 @@ Copyright (C) 2014 Apple Inc. All Rights Reserved.
 		CGContextAddLineToPoint(context, bounds.origin.x + bounds.size.width, temp);
 	}
 	
+	// Stroke on the draw-path
 	CGContextStrokePath(context);
 	
 	// Draw the center line
@@ -129,12 +130,12 @@ Copyright (C) 2014 Apple Inc. All Rights Reserved.
             CGContextMoveToPoint(context, bounds.origin.x + (float)counter / (float)(150 - 1) * bounds.size.width, bounds.origin.y + bounds.size.height / 2 + value * bounds.size.height / 2);
         }
     }
+	
     // Save any previous graphics state settings before setting the color and line width for the current draw.
     CGContextSaveGState(context);
     CGContextSetRGBStrokeColor(context, (axis == 0 ? 1.0 : 0.0), (axis == 1 ? 1.0 : 0.0), (axis == 2 ? 1.0 : 0.0), 1.0);
 	CGContextSetLineWidth(context, 2.0);
     CGContextStrokePath(context);
-    // Restore previous graphics state.
     CGContextRestoreGState(context);
 }
 
