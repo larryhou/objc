@@ -54,7 +54,8 @@ Copyright (C) 2014 Apple Inc. All Rights Reserved.
 int main(int argc, char *argv[])
 {
     int retVal = 0;
-    @autoreleasepool {
+    @autoreleasepool
+	{
         retVal = UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
     }
     return retVal;

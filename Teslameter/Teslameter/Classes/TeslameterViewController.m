@@ -65,24 +65,28 @@ Copyright (C) 2014 Apple Inc. All Rights Reserved.
 
 @implementation TeslameterViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
 	[super viewDidLoad];
 	
 	// setup the location manager
 	_locationManager = [[CLLocationManager alloc] init];
 	
 	// check if the hardware has a compass
-	if ([CLLocationManager headingAvailable] == NO) {
+	if ([CLLocationManager headingAvailable] == NO)
+	{
 		// No compass is available. This application cannot function without a compass, 
         // so a dialog will be displayed and no magnetic data will be measured.
         self.locationManager = nil;
         UIAlertView *noCompassAlert = [[UIAlertView alloc] initWithTitle:@"No Compass!"
-                                                                 message:@"This device does not have the ability to measure magnetic fields."
-                                                                delegate:nil
-                                                       cancelButtonTitle:@"OK"
-                                                       otherButtonTitles:nil];
+															     message:@"This device does not have the ability to measure magnetic fields."
+															    delegate:nil
+													   cancelButtonTitle:@"OK"
+													   otherButtonTitles:nil];
         [noCompassAlert show];
-	} else {
+	}
+	else
+	{
         // heading service configuration
         self.locationManager.headingFilter = kCLHeadingFilterNone;
         
@@ -94,40 +98,48 @@ Copyright (C) 2014 Apple Inc. All Rights Reserved.
     }
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
 	// Stop the compass
 	[self.locationManager stopUpdatingHeading];
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle {
-    // Status bar text should be white.
-    return UIStatusBarStyleLightContent;
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+	// Status bar text should be white.
+	return UIStatusBarStyleLightContent;
 }
 
 // This delegate method is invoked when the location manager has heading data.
-- (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)heading {
-    // Update the labels with the raw x, y, and z values.
+- (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)heading
+{
+	// Update the labels with the raw x, y, and z values.
 	self.xLabel.text = [NSString stringWithFormat:@"%.1f", heading.x];
 	self.yLabel.text = [NSString stringWithFormat:@"%.1f", heading.y];
 	self.zLabel.text = [NSString stringWithFormat:@"%.1f", heading.z];
-    
-    // Compute and display the magnitude (size or strength) of the vector.
+
+	// Compute and display the magnitude (size or strength) of the vector.
 	//      magnitude = sqrt(x^2 + y^2 + z^2)
 	CGFloat magnitude = sqrt(heading.x*heading.x + heading.y*heading.y + heading.z*heading.z);
-    [self.magnitudeLabel setText:[NSString stringWithFormat:@"%.1f", magnitude]];
-	
+	[self.magnitudeLabel setText:[NSString stringWithFormat:@"%.1f", magnitude]];
+
 	// Update the graph with the new magnetic reading.
 	[self.graphView updateHistoryWithX:heading.x y:heading.y z:heading.z];
 }
 
 // This delegate method is invoked when the location managed encounters an error condition.
-- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
-    if ([error code] == kCLErrorDenied) {
-        // This error indicates that the user has denied the application's request to use location services.
-        [manager stopUpdatingHeading];
-    } else if ([error code] == kCLErrorHeadingFailure) {
-        // This error indicates that the heading could not be determined, most likely because of strong magnetic interference.
-    }
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+{
+	if ([error code] == kCLErrorDenied)
+	{
+		// This error indicates that the user has denied the application's request to use location services.
+		[manager stopUpdatingHeading];
+	}
+	else
+	if ([error code] == kCLErrorHeadingFailure)
+	{
+		// This error indicates that the heading could not be determined, most likely because of strong magnetic interference.
+	}
 }
 
 @end
