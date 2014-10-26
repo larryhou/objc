@@ -80,8 +80,7 @@
     
     // by name
     UINavigationController *navController = [storyboard instantiateViewControllerWithIdentifier:@"navForTableView"];
-    ElementsTableViewController *viewController =
-        (ElementsTableViewController *)[navController topViewController];
+    ElementsTableViewController *viewController = (ElementsTableViewController *)[navController topViewController];
     dataSource = [[ElementsSortedByNameDataSource alloc] init];
     viewController.dataSource = dataSource;
     [viewControllers addObject:navController];

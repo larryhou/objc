@@ -165,7 +165,7 @@
 		// update the reflection image for the new view
 		reflectionHeight = CGRectGetHeight(self.atomicElementFlippedView.bounds) * reflectionFraction;
         reflectedImage = [self.atomicElementFlippedView reflectedImageRepresentationWithHeight:reflectionHeight];
-		_reflectionView.image = reflectedImage;
+		self.reflectionView.image = reflectedImage;
     }
     else
     {
